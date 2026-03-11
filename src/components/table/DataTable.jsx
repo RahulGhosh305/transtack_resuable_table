@@ -21,6 +21,7 @@ const DataTable = ({
     enableGlobalFilter = true,
     enableColumnVisibility = true,
     enablePagination = true,
+    pageSize = 5,
 }) => {
     const [rowSelection, setRowSelection] = useState({});
     const [globalFilter, setGlobalFilter] = useState("");
@@ -30,6 +31,11 @@ const DataTable = ({
     const table = useReactTable({
         data,
         columns,
+        initialState: {
+            pagination: {
+                pageSize: pageSize,
+            },
+        },
         state: {
             sorting,
             globalFilter,

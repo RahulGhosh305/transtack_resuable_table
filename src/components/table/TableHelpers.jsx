@@ -43,11 +43,34 @@ export const CellRenderers = {
   Date: () => (info) => (
     <span className="text-gray-500">{new Date(info.getValue()).toLocaleDateString()}</span>
   ),
-  Action: () => (info) => (
-    <button className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500 hover:text-gray-900 cursor-pointer border-none bg-transparent">
-      <MoreHorizontal className="w-5 h-5" />
-    </button>
-  )
+  Action: ({ onView, onEdit } = {}) => (info) => {
+    const data = info.row.original;
+    return (
+      <div className="flex items-center gap-2">
+        {onView && (
+          <button
+            onClick={() => onView(data)}
+            className="p-1text-indigo-600 hover:text-indigo-900 transition-colors bg-indigo-50 hover:bg-indigo-100 rounded-md px-2 py-1 text-xs font-medium cursor-pointer border-none"
+          >
+            View
+          </button>
+        )}
+        {onEdit && (
+          <button
+            onClick={() => onEdit(data)}
+            className="text-emerald-600 hover:text-emerald-900 transition-colors bg-emerald-50 hover:bg-emerald-100 rounded-md px-2 py-1 text-xs font-medium cursor-pointer border-none"
+          >
+            Edit
+          </button>
+        )}
+        {!onView && !onEdit && (
+          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500 hover:text-gray-900 cursor-pointer border-none bg-transparent">
+            <MoreHorizontal className="w-5 h-5" />
+          </button>
+        )}
+      </div>
+    );
+  }
 };
 
 /**
@@ -61,6 +84,7 @@ export const createReusableColumns = (configList) => {
     if (config.id === "actions") {
       return columnHelper.display({
         id: "actions",
+        header: config.header || "Actions",
         cell: config.cell || CellRenderers.Action()
       });
     }

@@ -1,6 +1,7 @@
 import DataTable from "./components/table/DataTable";
 import { usersData } from "./data/usersData.js";
 import { createReusableColumns, CellRenderers } from "./components/table/TableHelpers.jsx";
+import StudentProfilePage from "./StudentProfilePage.jsx";
 
 function App() {
   const columns = createReusableColumns([
@@ -40,6 +41,15 @@ function App() {
       accessorKey: "createdAt",
       header: "Joined Date",
       cell: CellRenderers.Date()
+    },
+    {
+      id: "actions",
+      accessorKey: "actions",
+      header: "Actions",
+      cell: CellRenderers.Action({
+        onView: (student) => alert(`Viewing profile for ID: ${student.id}`),
+        onEdit: (student) => alert(`Editing profile for ID: ${student.id}`)
+      })
     }
   ]);
 
@@ -60,10 +70,13 @@ function App() {
           subtitle="Manage your students and their details here."
           enableSorting={true}
           enableGlobalFilter={true}
-          enableColumnVisibility={true}
+          enableColumnVisibility={false}
           enablePagination={true}
+          pageSize={5}
         />
       </main>
+
+      <StudentProfilePage />
     </div>
   );
 }
